@@ -1,0 +1,36 @@
+# Render deployment configuration
+# Place this file in the server/ directory OR the repo root.
+# Render will auto-detect it and configure the service.
+#
+# IMPORTANT: Set the following environment variables in the Render dashboard:
+#   - DATABASE_URL  (your Supabase connection string with real password)
+#   - JWT_SECRET    (a long, secure random string)
+
+services:
+  - type: web
+    name: orthopedic-hospital-api
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CORS_ORIGIN
+        value: https://deviakula2006.github.io
+      - key: JWT_EXPIRES_IN
+        value: 8h
+      - key: BCRYPT_SALT_ROUNDS
+        value: 12
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX
+        value: 300
+      # Set these as SECRET env vars in the Render dashboard — do NOT put real values here
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+    healthCheckPath: /health
